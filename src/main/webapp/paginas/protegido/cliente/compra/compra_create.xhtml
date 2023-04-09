@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Compra create/edit
+	</ui:define>
+
+	<f:metadata>
+		<o:viewParam name="produto" value="#{compraEdit.produto}" />
+		<f:viewAction action="#{compraEdit.init()}" />
+	</f:metadata>
+
+	<ui:define name="content">
+		<center>
+
+			<h:form id="formEdit">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Registrar Compra</f:facet>
+
+					<p:outputLabel value="Produto: "
+						rendered="#{compraEdit.produto != null}" />
+					<p:outputLabel value="#{compraEdit.produto.nome}"
+						rendered="#{compraEdit.produto != null}" />
+
+					<p:outputLabel for="quantidade" value="Quantidade: " />
+					<p:inputNumber id="quantidade"
+						value="#{compraEdit.compra.quantidade}" decimalPlaces="0"
+						required="true" label="Numero" size="24">
+						<p:ajax update="quantidade" />
+						<p:ajax update="formEdit:totalCompra" />
+					</p:inputNumber>
+
+					<p:outputLabel value="Total: " />
+					<p:outputLabel id="totalCompra"
+						value="#{compraEdit.compra.quantidade * compraEdit.produto.preco}" />
+
+					<p:outputLabel value="Tipo de compra: " for="tipoDeCompra"
+						styleClass="rotulos" />
+					<p:selectOneMenu id="tipoDeCompra"
+						value="#{compraEdit.compra.tipoDeCompra}" style="width:200px"
+						required="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{compraEdit.getTipoDeCompras()}" var="s"
+							itemLabel="#{s.tipoDeCompra}" itemValue="#{s}" />
+						<p:ajax update="formEdit:pgCompra formEdit:pgReserva" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+				<p:panelGrid id="pgCompra" columns="2" styleClass="ui-noborder">
+					<p:outputLabel for="numeroCartao" value="Numero do cartão:"
+						rendered="#{compraEdit.eHCompra()}" />
+					<p:inputNumber id="numeroCartao"
+						value="#{compraEdit.compra.numeroCartao}" decimalPlaces="0"
+						required="true" label="NumeroCartao" size="24"
+						rendered="#{compraEdit.eHCompra()}">
+						<p:ajax update="numeroCartao" />
+					</p:inputNumber>
+
+					<p:outputLabel for="nomeTitular" value="Nome do titular:"
+						rendered="#{compraEdit.eHCompra()}" />
+					<p:inputText id="nomeTitular"
+						value="#{compraEdit.compra.nomeTitular}" label="NomeTitular"
+						rendered="#{compraEdit.eHCompra()}" required="true" />
+				</p:panelGrid>
+
+				<p:panelGrid id="pgReserva" columns="2" styleClass="ui-noborder">
+					<p:outputLabel for="dataRetirada" value="Data da retirada:"
+						rendered="#{compraEdit.eHReserva()}" />
+					<ui:include src="/WEB-INF/templates/_date.xhtml">
+						<ui:param name="id" value="dataRetirada" />
+						<ui:param name="required" value="true" />
+						<ui:param name="value" value="#{compraEdit.compra.dataRetirada}" />
+						<ui:param name="label" value="DataRetirada" />
+						<ui:param name="rendered" value="#{compraEdit.eHReserva()}" />
+					</ui:include>
+				</p:panelGrid>
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton action="#{compraEdit.saveCompra}" value="Salvar"
+						icon="fa fa-save" />
+					<p:button outcome="#{compraEdit.paginaPrincipal()}"
+						value="Cancelar" icon="fa fa-ban" />
+				</p:panelGrid>
+
+			</h:form>
+		</center>
+
+	</ui:define>
+</ui:composition>
+</html>

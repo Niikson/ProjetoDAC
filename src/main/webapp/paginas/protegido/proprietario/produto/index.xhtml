@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Manage Roupa
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:fieldset legend="Filtros">
+
+			<h:form id="formFilter">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Produto</f:facet>
+
+					<p:outputLabel value="Nome: " for="nome" styleClass="rotulos" />
+					<p:inputText id="nome" styleClass="edit"
+						value="#{manageProdutoProprietario.produtoFilter.nome}" label="Nome"
+						style="width:350px" />
+
+					<p:outputLabel value="Tamanho: " for="tamanho" styleClass="rotulos" />
+					<p:inputText id="tamanho" styleClass="edit"
+						value="#{manageProdutoProprietario.produtoFilter.tamanho}" label="Tamanho"
+						style="width:350px" />
+
+					<p:outputLabel value="Preço: " for="preco" styleClass="rotulos" />
+					<p:inputNumber id="preco" size="42"
+						value="#{manageProdutoProprietario.produtoFilter.preco}" label="Preço"
+						style="width:350px">
+						<p:ajax update="preco" />
+					</p:inputNumber>
+
+					<p:outputLabel value="Categoria: " for="categoria"
+						styleClass="rotulos" />
+					<p:selectOneMenu id="categoria"
+						value="#{manageProdutoProprietario.produtoFilter.categoria}"
+						style="width:200px" required="false">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{produtoEdit.getCategorias()}" var="s"
+							itemLabel="#{s.categoria}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Genero: " for="genero" styleClass="rotulos" />
+					<p:selectOneMenu id="genero"
+						value="#{manageProdutoProprietario.produtoFilter.genero}" style="width:200px"
+						required="false">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{produtoEdit.getGeneros()}" var="s"
+							itemLabel="#{s.genero}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Loja: " for="nomeLoja" styleClass="rotulos" />
+					<p:inputText id="nomeLoja" styleClass="edit"
+						value="#{manageProdutoProprietario.produtoFilter.nomeLoja}" label="NomeLoja"
+						style="width:350px" />
+
+
+					<p:commandButton id="btnFiltrar" value="Buscar"
+						action="#{manageProdutoProprietario.buscar()}" update=":tabelaProduto"
+						icon="fa fa-search" />
+					<p:commandButton id="btnLimpar" value="Limpar"
+						action="#{manageProdutoProprietario.limpar()}" update=":formFilter"
+						process="@this" icon="fa fa-times" />
+				</p:panelGrid>
+
+			</h:form>
+		</p:fieldset>
+
+		<p:fieldset legend="Resultado" toggleable="true">
+
+			<p:dataTable id="tabelaProduto" var="produto"
+				value="#{manageProdutoProprietario.produtos}"
+				emptyMessage="Nenhum registro encontrado." rows="5" paginator="true"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{produto.id}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<h:outputText value="#{produto.nome}" />
+				</p:column>
+
+				<p:column headerText="Tamanho">
+					<h:outputText value="#{produto.tamanho}" />
+				</p:column>
+
+				<p:column headerText="Preço">
+					<h:outputText value="#{produto.preco}">
+						<!-- 						<f:convertNumber type="currency" currencySymbol="R$" /> -->
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Categoria">
+					<h:outputText value="#{produto.categoria}" />
+				</p:column>
+
+				<p:column headerText="Genero">
+					<h:outputText value="#{produto.genero}" />
+				</p:column>
+
+				<p:column headerText="Loja">
+					<h:outputText value="#{produto.loja.nome}" />
+				</p:column>
+
+				<p:column headerText="Operações" width="300">
+					<p:button id="editProduto" outcome="produto_create.xhtml"
+						value="..." icon="fa fa-pencil">
+						<f:param name="produto" value="#{produto.id}" />
+					</p:button>
+
+					<p:tooltip id="toolTipEditProduto" for="editProduto"
+						value="Edit Produto..." position="top" />
+
+					<p:commandButton id="deleteProduto" icon="fa fa-times"
+						action="#{manageProdutoProprietario.delete(produto)}">
+						<p:confirm header="Confirmação!"
+							message="Do you want to delete '#{produto.nome}'?"
+							icon="fa fa-exclamation-circle" />
+					</p:commandButton>
+					<p:tooltip id="toolTipDeleteProduto" for="deleteProduto"
+						value="Delete" position="top" />
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+
+
+	</ui:define>
+
+</ui:composition>
+</html>

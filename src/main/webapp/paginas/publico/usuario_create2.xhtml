@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+	<title>Pessoa create/edit</title>
+</h:head>
+
+<f:metadata>
+	<f:viewAction action="#{pessoaEdit.init()}" />
+</f:metadata>
+
+<h:body>
+	<p:growl id="idMessages" showDetail="true" severity="info">
+		<p:autoUpdate />
+	</p:growl>
+	<p:messages id="idMessagesErrors" showDetail="true" closable="true"
+		severity="error">
+		<p:autoUpdate />
+	</p:messages>
+	<center>
+		<h:form id="formEdit">
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<f:facet name="header">Cadastrar Pessoa</f:facet>
+
+				<p:outputLabel value="Id: " rendered="#{pessoaEdit.edicaoDePessoa}" />
+				<p:outputLabel value="#{pessoaEdit.pessoa.id}"
+					rendered="#{pessoaEdit.edicaoDePessoa}" />
+
+				<p:outputLabel for="nome" value="Nome: " />
+				<p:inputText id="nome" value="#{pessoaEdit.pessoa.nome}"
+					required="true" label="Nome" style="width:200px" />
+
+				<p:outputLabel for="login" value="Login: " />
+				<p:outputPanel>
+					<p:inputText id="login" value="#{pessoaEdit.pessoa.login}"
+						label="Login" required="true" />
+					<p:commandButton id="checarDisponibilidadeLogin"
+						icon="fa fa-question" process="@this formEdit:login"
+						action="#{pessoaEdit.checarDisponibilidadeLogin()}" />
+					<p:tooltip id="checarDisponibilidadeLoginTooltip"
+						value="Is login available?" for="checarDisponibilidadeLogin" />
+				</p:outputPanel>
+
+				<p:outputLabel for="senha" value="Senha: "
+					rendered="#{!pessoaEdit.edicaoDePessoa}" />
+				<p:password id="senha" value="#{pessoaEdit.pessoa.senha}"
+					label="Senha" required="true"
+					rendered="#{!pessoaEdit.edicaoDePessoa}" match="confirmacaoSenha"
+					feedback="true" />
+
+				<p:outputLabel for="confirmacaoSenha" value="Confirmar Senha: "
+					rendered="#{!pessoaEdit.edicaoDePessoa}" />
+				<p:password id="confirmacaoSenha" value="#{pessoaEdit.pessoa.senha}"
+					label="Confirm Senha" required="true"
+					rendered="#{!pessoaEdit.edicaoDePessoa}" feedback="true" />
+
+				<p:outputLabel for="logradouro" value="Logradouro: " />
+				<p:inputText id="logradouro"
+					value="#{pessoaEdit.pessoa.endereco.logradouro}" required="true"
+					label="Logradouro" style="width:200px" />
+
+				<p:outputLabel for="numero" value="Numero: " />
+				<p:inputNumber id="numero"
+					value="#{pessoaEdit.pessoa.endereco.numero}" decimalPlaces="0"
+					required="true" label="Numero" size="24">
+					<p:ajax update="numero" />
+				</p:inputNumber>
+
+				<p:outputLabel for="bairro" value="Bairro: " />
+				<p:inputText id="bairro"
+					value="#{pessoaEdit.pessoa.endereco.bairro}" required="true"
+					label="Bairro" style="width:200px" />
+
+				<p:outputLabel for="cidade" value="Cidade: " />
+				<p:inputText id="cidade"
+					value="#{pessoaEdit.pessoa.endereco.cidade}" required="true"
+					label="Cidade" style="width:200px" />
+
+				<p:outputLabel for="estado" value="Estado: " />
+				<p:inputText id="estado"
+					value="#{pessoaEdit.pessoa.endereco.estado}" required="true"
+					label="Estado" style="width:200px" />
+
+				<p:outputLabel for="grupo" value="Grupo:" />
+				<p:selectOneMenu id="grupo" value="#{pessoaEdit.pessoa.grupo}"
+					label="Grupo" required="true">
+					<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+						itemDisabled="true" />
+					<f:selectItems value="#{pessoaEdit.getGrupos()}" var="g"
+						itemLabel="#{g.nome}" itemValue="#{g}" />
+					<p:ajax update="formEdit:pgCliente" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+
+			<p:panelGrid id="pgCliente" columns="2" styleClass="ui-noborder">
+				<p:outputLabel for="email" value="Email:"
+					rendered="#{pessoaEdit.isCliente()}" />
+				<p:inputText id="email" value="#{pessoaEdit.pessoa.email}"
+					label="Email" rendered="#{pessoaEdit.isCliente()}" required="true" />
+			</p:panelGrid>
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<p:commandButton action="#{pessoaEdit.savePessoa}" value="Salvar"
+					icon="fa fa-save" />
+				<p:button
+					outcome="/paginas/protegido/index.xhtml?faces-redirect=true"
+					value="Cancelar" icon="fa fa-ban" />
+			</p:panelGrid>
+
+		</h:form>
+	</center>
+
+</h:body>
+</html>

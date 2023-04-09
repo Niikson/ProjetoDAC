@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Manage Loja
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:fieldset legend="Filtros">
+
+			<h:form id="formFilter">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Loja</f:facet>
+
+					<p:outputLabel value="Nome: " for="nome" styleClass="rotulos" />
+					<p:inputText id="nome" styleClass="edit"
+						value="#{manageLoja.lojaFilter.nome}" label="Nome"
+						style="width:350px" />
+
+					<p:outputLabel value="Tipo de loja: " for="tipoLoja"
+						styleClass="rotulos" />
+					<p:selectOneMenu id="tipoLoja"
+						value="#{manageLoja.lojaFilter.tipoLoja}" style="width:200px"
+						required="false">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{lojaEdit.getTipoLojas()}" var="s"
+							itemLabel="#{s.tipoLoja}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+					<p:commandButton id="btnFiltrar" value="Buscar"
+						action="#{manageLoja.buscar()}" update=":tabelaLoja"
+						icon="fa fa-search" />
+					<p:commandButton id="btnLimpar" value="Limpar"
+						action="#{manageLoja.limpar()}" update=":formFilter"
+						process="@this" icon="fa fa-times" />
+				</p:panelGrid>
+
+			</h:form>
+		</p:fieldset>
+
+		<p:fieldset legend="Resultado" toggleable="true">
+
+			<p:dataTable id="tabelaLoja" var="loja" value="#{manageLoja.lojas}"
+				emptyMessage="Nenhum registro encontrado." rows="5" paginator="true"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{loja.id}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<h:outputText value="#{loja.nome}" />
+				</p:column>
+
+				<p:column headerText="Rua">
+					<h:outputText value="#{loja.endereco.rua}" />
+				</p:column>
+
+				<p:column headerText="Numero">
+					<h:outputText value="#{loja.endereco.numero}" />
+				</p:column>
+
+				<p:column headerText="Setor">
+					<h:outputText value="#{loja.endereco.setor}" />
+				</p:column>
+
+				<p:column headerText="Tipo de loja">
+					<h:outputText value="#{loja.tipoLoja}" />
+				</p:column>
+
+				<p:column headerText="Operações" width="300">
+					<p:button id="editLoja" outcome="loja_create.xhtml" value="..."
+						icon="fa fa-pencil">
+						<f:param name="loja" value="#{loja.id}" />
+					</p:button>
+					<p:tooltip id="toolTipEditLoja" for="editLoja" value="Edit Loja..."
+						position="top" />
+
+					<p:commandButton id="deleteLoja" icon="fa fa-times"
+						action="#{manageLoja.delete(loja)}">
+						<p:confirm header="Confirmação!"
+							message="Do you want to delete '#{loja.nome}'?"
+							icon="fa fa-exclamation-circle" />
+					</p:commandButton>
+					<p:tooltip id="toolTipDeleteLoja" for="deleteLoja" value="Delete"
+						position="top" />
+
+					<p:button id="editProduto" outcome="/paginas/protegido/proprietario/produto/produto_create.xhtml" value="..."
+						icon="fa fa-tag">
+						<f:param name="loja" value="#{loja.id}" />
+					</p:button>
+					<p:tooltip id="toolTipAdicionarProduto" for="editProduto"
+						value="Adicionar Produto..." position="top" />
+
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+
+
+	</ui:define>
+
+</ui:composition>
+</html>

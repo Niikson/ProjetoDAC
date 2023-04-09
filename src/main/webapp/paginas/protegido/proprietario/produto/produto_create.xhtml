@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Produto create/edit
+	</ui:define>
+
+	<f:metadata>
+		<o:viewParam name="loja" value="#{produtoEdit.loja}" />
+		<o:viewParam name="produto" value="#{produtoEdit.produto}" />
+		<f:viewAction action="#{produtoEdit.init()}" />
+	</f:metadata>
+
+	<ui:define name="content">
+		<center>
+
+			<h:form id="formEdit">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Cadastrar Produto</f:facet>
+					
+					<p:outputLabel value="Loja: "
+						rendered="#{produtoEdit.loja != null}" />
+					<p:outputLabel value="#{produtoEdit.loja.nome}"
+						rendered="#{produtoEdit.loja != null}" />
+
+					<p:outputLabel value="Id: "
+						rendered="#{produtoEdit.edicaoDeProduto}" />
+					<p:outputLabel value="#{produtoEdit.produto.id}"
+						rendered="#{produtoEdit.edicaoDeProduto}" />
+
+					<p:outputLabel for="nome" value="Nome: " />
+					<p:inputText id="nome" value="#{produtoEdit.produto.nome}"
+						required="true" label="Nome" />
+
+					<p:outputLabel for="tamanho" value="Tamanho: " />
+					<p:inputText id="tamanho" value="#{produtoEdit.produto.tamanho}"
+						required="true" label="Tamanho" />
+
+					<p:outputLabel for="preco" value="Preço: " />
+					<p:inputNumber id="preco" value="#{produtoEdit.produto.preco}"
+						symbol=" R$" decimalSeparator="," thousandSeparator="."
+						required="true">
+					</p:inputNumber>
+
+					<p:outputLabel for="categoria" value="Categoria: " />
+					<p:selectOneMenu id="categoria"
+						value="#{produtoEdit.produto.categoria}" style="width:200px"
+						required="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{produtoEdit.getCategorias()}" var="s"
+							itemLabel="#{s.categoria}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="genero" value="Genero: " />
+					<p:selectOneMenu id="genero"
+						value="#{produtoEdit.produto.genero}" style="width:200px"
+						required="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{produtoEdit.getGeneros()}" var="s"
+							itemLabel="#{s.genero}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton action="#{produtoEdit.saveProduto}" value="Salvar"
+						icon="fa fa-save" />
+					<p:button outcome="#{produtoEdit.paginaPrincipal()}"
+						value="Cancelar" icon="fa fa-ban" />
+				</p:panelGrid>
+
+			</h:form>
+		</center>
+	</ui:define>
+</ui:composition>
+</html>

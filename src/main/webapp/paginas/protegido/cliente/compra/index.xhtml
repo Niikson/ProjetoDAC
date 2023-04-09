@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Manage Compra
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:fieldset legend="Filtros">
+
+			<h:form id="formFilter">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Compra</f:facet>
+
+					<p:outputLabel value="Data: " for="data" styleClass="rotulos" />
+					<p:inputText id="data" styleClass="edit"
+						value="#{manageCompra.compraFilter.data}" label="Produto"
+						style="width:350px" />
+
+					<p:outputLabel value="Produto: " for="produto" styleClass="rotulos" />
+					<p:inputText id="produto" styleClass="edit"
+						value="#{manageCompra.compraFilter.nomeProduto}" label="Produto"
+						style="width:350px" />
+
+					<p:outputLabel value="Tipo de compra: " for="tipoDeCompra"
+						styleClass="rotulos" />
+					<p:selectOneMenu id="tipoDeCompra"
+						value="#{manageCompra.compraFilter.tipoDeCompra}"
+						style="width:200px" required="false">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{compraEdit.getTipoDeCompras()}" var="s"
+							itemLabel="#{s.tipoDeCompra}" itemValue="#{s}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Loja: " for="loja" styleClass="rotulos" />
+					<p:inputText id="loja" styleClass="edit"
+						value="#{manageCompra.compraFilter.nomeLoja}" label="Loja"
+						style="width:350px" />
+
+					<p:commandButton id="btnFiltrar" value="Buscar"
+						action="#{manageCompra.buscar()}" update=":tabelaCompra"
+						icon="fa fa-search" />
+					<p:commandButton id="btnLimpar" value="Limpar"
+						action="#{manageCompra.limpar()}" update=":formFilter"
+						process="@this" icon="fa fa-times" />
+				</p:panelGrid>
+
+			</h:form>
+		</p:fieldset>
+
+		<p:fieldset legend="Resultado" toggleable="true">
+
+			<p:dataTable id="tabelaCompra" var="compra"
+				value="#{manageCompra.compras}"
+				emptyMessage="Nenhum registro encontrado." rows="5" paginator="true"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{compra.id}" />
+				</p:column>
+
+				<p:column headerText="Data">
+					<h:outputText value="#{compra.data}" />
+				</p:column>
+
+				<p:column headerText="Produto">
+					<h:outputText value="#{compra.produto.nome}" />
+				</p:column>
+
+				<p:column headerText="Quantidade">
+					<h:outputText value="#{compra.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Total">
+					<h:outputText value="#{compra.total}" />
+				</p:column>
+
+				<p:column headerText="Tipo de compra">
+					<h:outputText value="#{compra.tipoDeCompra}" />
+				</p:column>
+
+				<p:column headerText="Loja">
+					<h:outputText value="#{compra.produto.loja.nome}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:fieldset>
+
+
+	</ui:define>
+
+</ui:composition>
+</html>

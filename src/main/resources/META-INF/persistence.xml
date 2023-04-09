@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+
+ <persistence-unit name="ProjetoDAC" transaction-type="RESOURCE_LOCAL">
+
+   <!-- provedor/implementacao do JPA -->
+   <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+   <!-- entidade mapeada -->
+   <class>entidades.Compra</class>
+   <class>entidades.Endereco</class>
+   <class>entidades.EnderecoLoja</class>
+   <class>entidades.Loja</class>
+   <class>entidades.Produto</class>
+   <class>entidades.Telefone</class>
+   <class>entidades.Pessoa</class>
+
+   <properties>
+    <!-- dados da conexao -->
+     <property name="javax.persistence.jdbc.driver" 
+             value="com.mysql.jdbc.Driver" />
+    <property name="javax.persistence.jdbc.url" 
+            value="jdbc:mysql://localhost:3306/projetoDac?useTimezone=true&amp;serverTimezone=UTC" />
+            <!-- createDatabaseIfNotExist=true -->
+    <property name="javax.persistence.jdbc.user" 
+            value="root" />
+    <property name="javax.persistence.jdbc.password" 
+            value="admin" />
+
+     <!--  propriedades do hibernate -->
+     <property name="hibernate.dialect" 
+            value="org.hibernate.dialect.MySQL57InnoDBDialect" />
+    <property name="hibernate.show_sql" value="true" />
+    <property name="hibernate.format_sql" value="true" />
+    <property name="hibernate.use_sql_comments" value="true" />
+    <property name="hibernate.default_catalog" value="projetodac" />
+
+    <!--  atualiza o banco, gera as tabelas se for preciso -->
+    <property name="hibernate.hbm2ddl.auto" value="update" />
+
+   </properties>
+ </persistence-unit>
+</persistence>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Manage Telefone
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:fieldset legend="Filtros">
+
+			<h:form id="formFilter">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Telefone</f:facet>
+					
+					<p:outputLabel for="DDD" value="DDD: " />
+					<p:inputNumber id="DDD" value="#{manageTelefone.telefoneFilter.DDD}"
+						decimalPlaces="0" required="false" label="DDD" size="24">
+						<p:ajax update="DDD" />
+					</p:inputNumber>
+					
+					<p:outputLabel for="numero" value="Numero: " />
+					<p:inputNumber id="numero" value="#{manageTelefone.telefoneFilter.numero}"
+						decimalPlaces="0" required="false" label="Numero" size="24">
+						<p:ajax update="numero" />
+					</p:inputNumber>
+
+					<p:commandButton id="btnFiltrar" value="Buscar"
+						action="#{manageTelefone.buscar()}" update=":tabelaTelefone"
+						icon="fa fa-search" />
+					<p:commandButton id="btnLimpar" value="Limpar"
+						action="#{manageTelefone.limpar()}" update=":formFilter"
+						process="@this" icon="fa fa-times" />
+				</p:panelGrid>
+
+			</h:form>
+		</p:fieldset>
+
+		<p:fieldset legend="Resultado" toggleable="true">
+
+			<p:dataTable id="tabelaTelefone" var="telefone"
+				value="#{manageTelefone.telefones}"
+				emptyMessage="Nenhum registro encontrado." rows="5" paginator="true"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{telefone.id}" />
+				</p:column>
+
+				<p:column headerText="DDD">
+					<h:outputText value="#{telefone.DDD}" />
+				</p:column>
+
+				<p:column headerText="Numero">
+					<h:outputText value="#{telefone.numero}" />
+				</p:column>
+
+				<p:column headerText="Usuario">
+					<h:outputText value="#{telefone.pessoa.nome}" />
+				</p:column>
+
+				<p:column headerText="Operações" width="300">
+
+					<p:button id="editTelefone"
+						outcome="/paginas/protegido/telefone_edit.xhtml" value="..."
+						icon="fa fa-pencil">
+						<f:param name="telefone" value="#{telefone.id}" />
+					</p:button>
+					<p:tooltip id="toolTipEditTelefone" for="editTelefone"
+						value="Edit Telefone..." position="top" />
+
+					<p:commandButton id="deleteTelefone" icon="fa fa-times"
+						action="#{manageTelefone.delete(telefone)}">
+						<p:confirm header="Confirmação!"
+							message="Do you want to delete '#{telefone.numero}'?"
+							icon="fa fa-exclamation-circle" />
+					</p:commandButton>
+					<p:tooltip id="toolTipDeleteTelefone" for="deleteTelefone"
+						value="Delete" position="top" />
+
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+
+
+	</ui:define>
+
+</ui:composition>
+</html>

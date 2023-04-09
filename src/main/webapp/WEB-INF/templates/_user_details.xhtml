@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition>
+
+	<p:dialog id="userDetailsDialogId" widgetVar="userDetailsDialog" header="Informações do usuario" modal="true" dynamic="true" closeOnEscape="true">
+	
+		<h:form id="formUserDetails">
+			<p:messages id="idMessagesErrorsUserDetails" showDetail="true" closable="true" severity="error">
+				<p:autoUpdate />
+			</p:messages>
+			
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+			
+				<h:outputText value="Nome:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.nome}" />
+
+				<h:outputText value="Login:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.login}" />
+				
+				<h:outputText value="Rua:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.endereco.logradouro}" />
+				
+				<h:outputText value="Numero:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.endereco.numero}" />
+				
+				<h:outputText value="Bairro:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.endereco.bairro}" />
+				
+				<h:outputText value="Cidade:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.endereco.cidade}" />
+				
+				<h:outputText value="Estado:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.endereco.estado}" />
+
+				<h:outputText value="Grupo:" style="font-weight: bold;" />
+				<h:outputText value="#{informacoesPessoa.informacaoPessoa.grupo.nome}" />
+			</p:panelGrid>
+		</h:form>
+	
+	</p:dialog>
+
+</ui:composition>
+
+</html>

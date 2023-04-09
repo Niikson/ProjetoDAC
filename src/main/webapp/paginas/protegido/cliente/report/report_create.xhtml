@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<ui:define name="title">
+		Report create/edit
+	</ui:define>
+
+	<f:metadata>
+		<o:viewParam name="pessoa" value="#{reportEdit.pessoa}" />
+		<f:viewAction action="#{reportEdit.init()}" />
+	</f:metadata>
+
+	<ui:define name="content">
+		<center>
+
+			<h:form id="formEdit">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Criar Report</f:facet>
+
+					<p:outputLabel value="Usuario: "
+						rendered="#{reportEdit.pessoa != null}" />
+					<p:outputLabel value="#{reportEdit.pessoa.nome}"
+						rendered="#{reportEdit.pessoa != null}" />
+
+					<p:outputLabel for="comentario" value="Comentario: " />
+					<p:inputTextarea rows="10" cols="50" id="comentario"
+						value="#{reportEdit.report.comentario}" />
+
+				</p:panelGrid>
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton action="#{reportEdit.saveReport}"
+						value="Salvar" icon="fa fa-save" />
+					<p:button outcome="/paginas/protegido/index.xhtml"
+						value="Cancelar" icon="fa fa-ban" />
+				</p:panelGrid>
+
+			</h:form>
+		</center>
+	</ui:define>
+</ui:composition>
+</html>
